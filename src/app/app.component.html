@@ -1,0 +1,43 @@
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand mr-auto" href="#">Blockchain Pools</a>
+  <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="showForm = !showForm"
+  >
+    Create Pool
+  </button>
+</nav>
+<section class="jumpotron bg-light text-center">
+  <h1>Blockchain Pools</h1>
+  <p class="lead text-muted">Powered by FIAP MBA</p>
+</section>
+
+<app-poll-create
+  *ngIf="showForm"
+  (pollCreated)="handlePollCreate($event)"
+></app-poll-create>
+
+<div class="d-flex">
+  <div class="container poll-list">
+    <app-poll-list
+      *ngFor="let poll of polls | async"
+      [question]="poll.question"
+      [voted]="poll.voted"
+      [votes]="poll.results"
+      [pollImage]="poll.thumbnail"
+      (click)="setActivePoll(poll)"
+    ></app-poll-list>
+  </div>
+  <div class="container poll-detail">
+    <app-poll-vote
+      *ngIf="activePoll"
+      [id]="activePoll.id"
+      [question]="activePoll.question"
+      [voted]="activePoll.voted"
+      [options]="activePoll.options"
+      [results]="activePoll.results"
+      (pollVoted)="handlePollVote($event)"
+    ></app-poll-vote>
+  </div>
+</div>
